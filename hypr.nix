@@ -7,6 +7,7 @@
     hyprshot
     swaybg
     wofi
+    brightnessctl
     networkmanagerapplet
   ];
 
