@@ -147,7 +147,7 @@
         pulseaudio = {
           format = "{volume}% {icon} ";
           format-bluetooth = "{volume}% {icon} {format_source}";
-          format-bluetooth-muted = "🔇 {icon} {format_source}";
+          format-bluetooth-muted = "🔇  {format_source}";
           format-icons = {
             car = "";
             default = [
@@ -161,7 +161,7 @@
             phone = "";
             portable = "";
           };
-          format-muted = "🔇 {icon} ";
+          format-muted = "🔇 ";
           format-source = "{volume}% ";
           format-source-muted = "";
           on-click = "pavucontrol";
