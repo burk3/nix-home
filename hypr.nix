@@ -212,8 +212,12 @@
         background-color: rgba(0,153,153,1);
       }
 
-      #workspaces button.focused {
+      #workspaces button.active {
         background-color: rgba(0,43,51,0.85);
+      }
+
+      # workspaces button.urgent {
+        background-color: #bf616a;
       }
 
       #clock,
