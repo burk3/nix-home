@@ -21,6 +21,16 @@
     dig
   ];
 
+  programs.git = {
+    enable = true;
+    userName = "Burke Cates";
+    userEmail = "burke.cates@gmail.com";
+    extraConfig.init.defaultBranch = "master";
+    aliases.co = "checkout";
+    aliases.st = "status";
+    aliases.lg = "log --graph --decorate --oneline";
+  };
+
   programs.neovim = {
     enable = true;
     defaultEditor = true;
