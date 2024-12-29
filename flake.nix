@@ -25,20 +25,17 @@
 
         # Specify your home configuration modules here, for example,
         # the path to your home.nix.
-        modules =
-          let
+        # Here I'm using the contents of the `flags` dir to decide what modules to pull in.
+        # Hopefully this is not too much of a faux pas. :)
+        # Always pull in home and shell.
+        modules = let
             flags = builtins.readDir ./flags;
-            common = [
-              ./home.nix
-              ./shell.nix
-            ];
-            gui = [
-              ./gui.nix
-              ./hypr.nix
-              {home.packages = [ ghostty.packages.x86_64-linux.default ]; }
-            ];
-          in
-          if flags ? "GUI" then common ++ gui else common;
+            gui = ./modules/gui.nix;
+            hypr = ./modules/hypr.nix;
+            ghostty_mod = {home.packages = [ ghostty.packages.x86_64-linux.default ]; };
+          in [ ./home.nix ./modules/shell.nix ] ++
+            (if flags ? "GUI" then [ gui ghostty_mod ] else []) ++
+            (if flags ? "HYPR" then assert flags ? "GUI"; [ hypr ] else []);
 
         # Optionally use extraSpecialArgs
         # to pass through arguments to home.nix
