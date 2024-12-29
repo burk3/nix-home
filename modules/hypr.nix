@@ -429,7 +429,7 @@
     enable = true;
     settings =
       let
-        wallpaper = "/home/burke/Pictures/frieren.jpeg";
+        wallpaper = "${pkgs.pantheon.elementary-wallpapers}/share/backgrounds/Photo of Valley.jpg";
       in
       {
         preload = [
