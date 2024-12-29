@@ -19,6 +19,7 @@
   # environment.
   home.packages = with pkgs; [
     dig
+    nil
   ];
 
   programs.git = {
@@ -41,11 +42,17 @@
       pkgs.vimPlugins.gundo-vim
       pkgs.vimPlugins.vim-surround
       pkgs.vimPlugins.vim-airline
+      pkgs.vimPlugins.vim-markdown
+      {
+        plugin = pkgs.vimPlugins.nvim-lspconfig;
+        config = ''
+          lua require'lspconfig'.nil_ls.setup{}
+        '';
+      }
       {
         plugin = pkgs.vimPlugins.vim-airline-themes;
         config = "let g:airline_theme='nord_minimal'";
       }
-      pkgs.vimPlugins.vim-markdown
       {
         plugin = pkgs.vimPlugins.nord-nvim;
         config = "colorscheme nord";
