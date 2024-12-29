@@ -8,13 +8,12 @@
       url = "github:nix-community/home-manager/release-24.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    ghostty = {
-      url = "github:ghostty-org/ghostty";
-    };
+    ghostty.url = "github:ghostty-org/ghostty";
+    ghostty_hm.url = "github:clo4/ghostty-hm-module";
   };
 
   outputs =
-    { nixpkgs, home-manager, ghostty, ... }:
+    { nixpkgs, home-manager, ghostty, ghostty_hm, ... }:
     let
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
@@ -32,13 +31,15 @@
             flags = builtins.readDir ./flags;
             gui = ./modules/gui.nix;
             hypr = ./modules/hypr.nix;
-            ghostty_mod = {home.packages = [ ghostty.packages.x86_64-linux.default ]; };
-          in [ ./home.nix ./modules/shell.nix ] ++
-            (if flags ? "GUI" then [ gui ghostty_mod ] else []) ++
+          in [ ghostty_hm.homeModules.default ./home.nix ./modules/shell.nix ] ++
+            (if flags ? "GUI" then [ gui ] else []) ++
             (if flags ? "HYPR" then assert flags ? "GUI"; [ hypr ] else []);
 
         # Optionally use extraSpecialArgs
         # to pass through arguments to home.nix
+        extraSpecialArgs = {
+          ghostty = ghostty;
+        };
       };
     };
 }
