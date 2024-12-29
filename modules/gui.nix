@@ -9,10 +9,18 @@
     mpv
     spotify
     playerctl
-    kitty
-    rio
-    foot
+    iosevka
   ];
+
+  programs.kitty = {
+    enable = true;
+    font = {
+      name = "Iosevka";
+      package = pkgs.iosevka;
+      size = 10;
+    };
+    themeFile = "Nord";
+  };
 
   programs.ghostty = {
     enable = true;
@@ -24,15 +32,14 @@
       font-family = "Iosevka";
       font-size = 10;
       # Potentially good light themes; (bws) means black and white are swapped in numbered colors
-      #
-      # Material
-      # iceberg-light (bws)
-      # nord-light - not enough contrast
-      # ayu_light - very bright, maybe not enough contrast
-      # catppuccin-latte - very grey black and whites might be good
-      # NvimLight
-      # rose-pine-dawn (bws)
-      # seoulbones_light (bws)
+      # - Material
+      # - iceberg-light (bws)
+      # - nord-light - not enough contrast
+      # - ayu_light - very bright, maybe not enough contrast
+      # - catppuccin-latte - very grey black and whites might be good
+      # - NvimLight
+      # - rose-pine-dawn (bws)
+      # - seoulbones_light (bws)
       theme = "light:ayu_light,dark:nord";
     };
   };
