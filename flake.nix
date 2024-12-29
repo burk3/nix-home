@@ -8,10 +8,13 @@
       url = "github:nix-community/home-manager/release-24.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    ghostty = {
+      url = "github:ghostty-org/ghostty";
+    };
   };
 
   outputs =
-    { nixpkgs, home-manager, ... }:
+    { nixpkgs, home-manager, ghostty, ... }:
     let
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
@@ -32,6 +35,7 @@
             gui = [
               ./gui.nix
               ./hypr.nix
+              {home.packages = [ ghostty.packages.x86_64-linux.default ]; }
             ];
           in
           if flags ? "GUI" then common ++ gui else common;
