@@ -24,7 +24,7 @@
       hyprexpo
       #   hy3
     ];
-    extraConfig = builtins.readFile ./hyprland.conf;
+    extraConfig = builtins.readFile ../dotfiles/hyprland.conf;
     # maybe later. this is tedious
     # settings = {
     #   monitor = ",preferred,auto,auto";
