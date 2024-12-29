@@ -24,25 +24,162 @@
       hyprexpo
       #   hy3
     ];
-    extraConfig = builtins.readFile ../dotfiles/hyprland.conf;
-    # maybe later. this is tedious
-    # settings = {
-    #   monitor = ",preferred,auto,auto";
-    #   "$terminal" = "ghostty";
-    #   "$fileManager" = "nautilus";
-    #   "$menu" = "wofi --show drun";
-    #   "$lock" = "hyprlock";
-    #   exec-once = "nm-applet & waybar &";
-    #   env = "XCURSOR_SIZE,24";
-    #   general = {
-    #     gaps_in = 5;
-    #     gaps_out = 20;
-    #     border_size = 2;
-    #     "col.active_border" = "rgba(33ccffee) rgba(00ff99ee) 45deg";
-    #     "col.inactive_border" = "rgba(595959aa)";
-    #     resize_on_border = false;
+    settings = let
+      terminal = "ghostty";
+      fileManager = "nautilus";
+      menu = "wofi --show drun";
+      lock = "loginctl lock-session";
+    in {
+      # {{{ hyprland.settings
+      monitor = ",preferred,auto,auto";
+      exec-once = [ "nm-applet &" ];
+      env = [ "XCURSOR_SIZE,24" "HYPRCURSOR_SIZE,24" ];
+      general = {
+        gaps_in = 5;
+        gaps_out = 20;
+        border_size = 2;
+        "col.active_border" = "rgba(33ccffee) rgba(00ff99ee) 45deg";
+        "col.inactive_border" = "rgba(595959aa)";
+        resize_on_border = false;
+        allow_tearing = false;
+        layout = "dwindle";
+      };
+      decoration = {
+        rounding = 10;
+        active_opacity = "1.0";
+        inactive_opacity = "1.0";
+        shadow = {
+          enabled = true;
+          range = 4;
+          render_power = 3;
+          color = "rgba(1a1a1aee)";
+        };
+        blur = {
+          enabled = true;
+          size = 3;
+          passes = 1;
+          vibrancy = "0.1696";
+        };
+      };
+      dwindle = {
+        pseudotile = true;
+        preserve_split = true;
+      };
+      plugin.hyprexpo = {
+        enable_gesture = true;
+        columns = 3;
+        gaps = 5;
+        bg_col = "rgb(111111)";
+        workspace_method = "center current";
+        gesture_fingers = 3; # 3 or 4
+        gesture_distance = 300; # how far is the "max"
+        gesture_positive = true; # positive = swipe down. Negative = swipe up.
+      };
+      master = {
+        new_status = "master";
+      };
+      misc = {
+        force_default_wallpaper = 0;
+        disable_hyprland_logo = true;
+      };
+      input = {
+        kb_layout = "us";
+        follow_mouse = 1;
+        sensitivity = 0;
+        touchpad = {
+          natural_scroll = true;
+          tap-to-click = false; # thank god
+          tap-and-drag = false;
+          clickfinger_behavior = true; # click with 2/3 fingers for right/middle
+          scroll_factor = "0.5"; # sloooow down
+        };
+      };
+      gestures = {
+        workspace_swipe = true; # bless up, fam
+      };
+      windowrulev2 = [
+        # Ignore maximize requests from apps. You'll probably like this.
+        "suppressevent maximize, class:.*"
+        # Fix some dragging issues with XWayland
+        "nofocus,class:^$,title:^$,xwayland:1,floating:1,fullscreen:0,pinned:0"
+      ];
+      "$mainMod" = "SUPER";
+      bind = [
+        "$mainMod, Return, exec, ${terminal}"
+        "$mainMod SHIFT, C, killactive,"
+        "$mainMod SHIFT, Q, exit,"
+        "$mainMod, E, exec, ${fileManager}"
+        "$mainMod, V, togglefloating,"
+        "$mainMod, R, exec, ${menu}"
+        "$mainMod, P, pseudo," # dwindle
+        "$mainMod, S, togglesplit," # dwindle
+        "$mainMod SHIFT, Z, exec, ${lock}"
+        "$mainMod, F, fullscreen"
+        "$mainMod SHIFT, F, togglefloating"
+        "$mainMod SHIFT, S, exec, hyprshot -m region"
+        "$mainMod CONTROL, S, exec, hyprshot -m window"
+        "$mainMod ALT , S, exec, hyprshot -m output"
+        # Move focus with mainMod + vi move keys
+        "$mainMod, H, movefocus, l"
+        "$mainMod, L, movefocus, r"
+        "$mainMod, K, movefocus, u"
+        "$mainMod, J, movefocus, d"
+        # Switch workspaces with mainMod + [0-9]
+        "$mainMod, 1, workspace, 1"
+        "$mainMod, 2, workspace, 2"
+        "$mainMod, 3, workspace, 3"
+        "$mainMod, 4, workspace, 4"
+        "$mainMod, 5, workspace, 5"
+        "$mainMod, 6, workspace, 6"
+        "$mainMod, 7, workspace, 7"
+        "$mainMod, 8, workspace, 8"
+        "$mainMod, 9, workspace, 9"
+        "$mainMod, 0, workspace, 10"
+        # Move active window to a workspace with mainMod + SHIFT + [0-9]
+        "$mainMod SHIFT, 1, movetoworkspace, 1"
+        "$mainMod SHIFT, 2, movetoworkspace, 2"
+        "$mainMod SHIFT, 3, movetoworkspace, 3"
+        "$mainMod SHIFT, 4, movetoworkspace, 4"
+        "$mainMod SHIFT, 5, movetoworkspace, 5"
+        "$mainMod SHIFT, 6, movetoworkspace, 6"
+        "$mainMod SHIFT, 7, movetoworkspace, 7"
+        "$mainMod SHIFT, 8, movetoworkspace, 8"
+        "$mainMod SHIFT, 9, movetoworkspace, 9"
+        "$mainMod SHIFT, 0, movetoworkspace, 10"
+        # Example special workspace (scratchpad)
+        "$mainMod, backslash, togglespecialworkspace, magic"
+        "$mainMod SHIFT, backslash, movetoworkspace, special:magic"
+        # Scroll through existing workspaces with mainMod + scroll
+        "$mainMod, mouse_down, workspace, e+1"
+        "$mainMod, mouse_up, workspace, e-1"
+      ];
+      bindm = [
+        # Move/resize windows with mainMod + LMB/RMB and dragging
+        "$mainMod, mouse:272, movewindow"
+        "$mainMod, mouse:273, resizewindow"
+      ];
+      bindel = [
+        # Laptop multimedia keys for volume and LCD brightness
+        ",XF86AudioRaiseVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+"
+        ",XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
+        ",XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+        ",XF86AudioMicMute, exec, wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
+        ",XF86MonBrightnessUp, exec, brightnessctl s 10%+"
+        ",XF86MonBrightnessDown, exec, brightnessctl s 10%-"
+      ];
+      bindl = [
+        # Requires playerctl
+        ", XF86AudioNext, exec, playerctl next"
+        ", XF86AudioPause, exec, playerctl play-pause"
+        ", XF86AudioPlay, exec, playerctl play-pause"
+        ", XF86AudioPrev, exec, playerctl previous"
+        # go to sleep when shut
+        ", switch:on:Lid Switch, exec, systemctl suspend"
+      ];
+      # }}} hyprland.settings
+    };
   };
-  # }}}
+  # }}} hyprland
 
   # {{{ hypridle
   services.hypridle = {
@@ -266,8 +403,8 @@
       /*-----Colors----*/
       /*
        *rgba(0,85,102,1),#005566 --> Indigo(dye)
-       *rgba(0,43,51,1),#002B33 --> Dark Green 
-       *rgba(0,153,153,1),#009999 --> Persian Green 
+       *rgba(0,43,51,1),#002B33 --> Dark Green
+       *rgba(0,153,153,1),#009999 --> Persian Green
        *
        */
     '';
