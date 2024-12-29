@@ -1,5 +1,5 @@
 # vim: foldmethod=marker
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 {
   home.packages = with pkgs; [
     hyprsunset
@@ -12,6 +12,18 @@
   ];
 
   services.blueman-applet.enable = true;
+  services.gnome-keyring = {
+    enable = true;
+    components = [
+      "pkcs11"
+      "secrets"
+      "ssh"
+    ];
+  };
+  # set ssh-agent to use the gnome-keyring socket
+  home.sessionVariables = {
+    SSH_AUTH_SOCK = "\${XDG_RUNTIME_DIR:-/run/user/$UID}/keyring/ssh";
+  };
 
   # {{{ hyprland
   wayland.windowManager.hyprland = {
