@@ -11,6 +11,8 @@
     networkmanagerapplet
   ];
 
+  services.blueman-applet.enable = true;
+
   # {{{ hyprland
   wayland.windowManager.hyprland = {
     enable = true;
@@ -82,7 +84,7 @@
     enable = true;
     systemd = {
       enable = true;
-      target = "wayland-session@Hyprland.target";
+      target = "hyprland-session.target";
     };
     # {{{ waybar.settings
     settings = {
@@ -91,7 +93,7 @@
         position = "top";
         modules-left = [
           "hyprland/workspaces"
-          "hyprland/mode"
+          "hyprland/submap"
         ];
         modules-right = [
           "tray"
@@ -114,7 +116,8 @@
         };
         "hyprland/window" = {
           format = "{}";
-          max-length = 50;
+          max-length = 80;
+          min-length = 80;
           tooltip = false;
         };
         idle_inhibitor = {
@@ -231,12 +234,13 @@
       #custom-media,
       #tray,
       #mode,
+      #submap,
       #custom-power,
       #custom-menu,
       #idle_inhibitor {
           padding: 0 10px;
       }
-      #mode {
+      #submap, #mode {
           color: #cc3436;
           font-weight: bold;
       }
