@@ -10,6 +10,7 @@
     spotify
     playerctl
     iosevka
+    pinta
   ];
 
   programs.kitty = {
