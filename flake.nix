@@ -29,10 +29,12 @@
         # Always pull in home and shell.
         modules = let
             flags = builtins.readDir ./flags;
+	    single-user = ./modules/single-user.nix;
             gui = ./modules/gui.nix;
             hypr = ./modules/hypr.nix;
           in [ ghostty_hm.homeModules.default ./home.nix ./modules/shell.nix ] ++
             (if flags ? "GUI" then [ gui ] else []) ++
+	    (if flags ? "SINGLE-USER" then [ single-user ] else []) ++
             (if flags ? "HYPR" then assert flags ? "GUI"; [ hypr ] else []);
 
         # Optionally use extraSpecialArgs
