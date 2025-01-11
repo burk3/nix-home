@@ -23,6 +23,7 @@
     bat
     neofetch
     eternal-terminal
+    btop
   ];
 
   programs.git = {

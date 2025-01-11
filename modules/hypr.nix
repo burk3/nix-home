@@ -9,7 +9,19 @@
     wofi
     brightnessctl
     networkmanagerapplet
+    posy-cursors
+    # fonts
+    iosevka
+    (nerdfonts.override { fonts = [ "Ubuntu" ]; })
   ];
+
+  fonts.fontconfig = {
+    enable = true;
+    defaultFonts.monospace = [
+      "Berkeley Mono"
+      "Iosevka"
+    ];
+  };
 
   services.blueman-applet.enable = true;
   services.gnome-keyring = {
@@ -23,6 +35,15 @@
   # set ssh-agent to use the gnome-keyring socket
   home.sessionVariables = {
     SSH_AUTH_SOCK = "\${XDG_RUNTIME_DIR:-/run/user/$UID}/keyring/ssh";
+  };
+
+  home.pointerCursor = {
+    name = "Posy_Cursor_Black";
+    package = pkgs.posy-cursors;
+    x11.enable = true;
+    gtk.enable = true;
+    # one day
+#    hyprcursor.enable = true;
   };
 
   # {{{ hyprland
@@ -45,7 +66,7 @@
       # {{{ hyprland.settings
       monitor = ",preferred,auto,auto";
       exec-once = [ "nm-applet &" ];
-      env = [ "XCURSOR_SIZE,24" "HYPRCURSOR_SIZE,24" ];
+      env = [ "XCURSOR_SIZE,32" "HYPRCURSOR_SIZE,32" "HYPRCURSOR_THEME,Posy_Cursor_Black" ];
       general = {
         gaps_in = 5;
         gaps_out = 20;
@@ -292,6 +313,7 @@
           #on-click = "kitty -e 'nmtui'";
         };
         battery = {
+          full-at = 90;
           states = {
             warning = 30;
             critical = 15;
