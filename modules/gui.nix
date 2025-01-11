@@ -16,15 +16,6 @@
     brogue-ce
   ];
 
-  programs.kitty = {
-    enable = true;
-    font = {
-      name = "Iosevka";
-      package = pkgs.iosevka;
-      size = 10;
-    };
-  };
-
   programs.ghostty = {
     enable = true;
     package = ghostty.packages.x86_64-linux.default;
@@ -32,7 +23,10 @@
     settings = {
       window-decoration = false;
       cursor-style = "block";
-      font-family = "Iosevka";
+      font-family = [
+        "Berkeley Mono"
+        "Iosevka"
+      ];
       font-size = 10;
       # Potentially good light themes; (bws) means black and white are swapped in numbered colors
       # - Material
