@@ -55,7 +55,7 @@
     };
     plugins = with pkgs.hyprlandPlugins; [
       hyprexpo
-      #   hy3
+      hy3
     ];
     settings = let
       terminal = "ghostty";
@@ -75,7 +75,8 @@
         "col.inactive_border" = "rgba(595959aa)";
         resize_on_border = false;
         allow_tearing = false;
-        layout = "dwindle";
+        #layout = "dwindle";
+        layout = "hy3";
       };
       decoration = {
         rounding = 10;
@@ -108,6 +109,14 @@
         gesture_distance = 300; # how far is the "max"
         gesture_positive = true; # positive = swipe down. Negative = swipe up.
       };
+      plugin.hy3 = {
+        node_collapse_policy = 0;
+        autotile = {
+          enable = true;
+          trigger_width = 800;
+          trigger_height = 500;
+        };
+      };
       master = {
         new_status = "master";
       };
@@ -139,7 +148,7 @@
       "$mainMod" = "SUPER";
       bind = [
         "$mainMod, Return, exec, ${terminal}"
-        "$mainMod SHIFT, C, killactive,"
+        "$mainMod SHIFT, C, hy3:killactive,"
         "$mainMod SHIFT, Q, exit,"
         "$mainMod, E, exec, ${fileManager}"
         "$mainMod, V, togglefloating,"
@@ -153,10 +162,41 @@
         "$mainMod CONTROL, S, exec, hyprshot -m window"
         "$mainMod ALT , S, exec, hyprshot -m output"
         # Move focus with mainMod + vi move keys
-        "$mainMod, H, movefocus, l"
-        "$mainMod, L, movefocus, r"
-        "$mainMod, K, movefocus, u"
-        "$mainMod, J, movefocus, d"
+        "$mainMod, H, hy3:movefocus, l"
+        "$mainMod, L, hy3:movefocus, r"
+        "$mainMod, K, hy3:movefocus, u"
+        "$mainMod, J, hy3:movefocus, d"
+        # hy3 stuff
+        "$mainMod+SHIFT, T, hy3:makegroup, tab"
+        "$mainMod+SHIFT, E, hy3:makegroup, v"
+        "$mainMod+SHIFT, W, hy3:makegroup, h"
+        "$mainMod, A, hy3:changefocus, raise"
+        "$mainMod+SHIFT, A, hy3:changefocus, lower"
+        "$mainMod, D, hy3:expand, expand"
+        "$mainMod+SHIFT, D, hy3:expand, base"
+        "$mainMod+SHIFT, X, hy3:changegroup, opposite"
+        "$mainMod+CONTROL, H, hy3:movefocus, l, visible, nowarp"
+        "$mainMod+CONTROL, L, hy3:movefocus, r, visible, nowarp"
+        "$mainMod+CONTROL, K, hy3:movefocus, u, visible, nowarp"
+        "$mainMod+CONTROL, J, hy3:movefocus, d, visible, nowarp"
+        "$mainMod+SHIFT, H, hy3:movewindow, l, once"
+        "$mainMod+SHIFT, L, hy3:movewindow, r, once"
+        "$mainMod+SHIFT, K, hy3:movewindow, u, once"
+        "$mainMod+SHIFT, J, hy3:movewindow, d, once"
+        "$mainMod+CONTROL+SHIFT, H, hy3:movewindow, l, once, visible"
+        "$mainMod+CONTROL+SHIFT, L, hy3:movewindow, r, once, visible"
+        "$mainMod+CONTROL+SHIFT, K, hy3:movewindow, u, once, visible"
+        "$mainMod+CONTROL+SHIFT, J, hy3:movewindow, d, once, visible"
+        "$mainMod+CONTROL, 1, hy3:focustab, 1"
+        "$mainMod+CONTROL, 2, hy3:focustab, 2"
+        "$mainMod+CONTROL, 3, hy3:focustab, 3"
+        "$mainMod+CONTROL, 4, hy3:focustab, 4"
+        "$mainMod+CONTROL, 5, hy3:focustab, 5"
+        "$mainMod+CONTROL, 6, hy3:focustab, 6"
+        "$mainMod+CONTROL, 7, hy3:focustab, 7"
+        "$mainMod+CONTROL, 8, hy3:focustab, 8"
+        "$mainMod+CONTROL, 9, hy3:focustab, 9"
+        "$mainMod+CONTROL, 0, hy3:focustab, 10"
         # Switch workspaces with mainMod + [0-9]
         "$mainMod, 1, workspace, 1"
         "$mainMod, 2, workspace, 2"
@@ -169,16 +209,16 @@
         "$mainMod, 9, workspace, 9"
         "$mainMod, 0, workspace, 10"
         # Move active window to a workspace with mainMod + SHIFT + [0-9]
-        "$mainMod SHIFT, 1, movetoworkspace, 1"
-        "$mainMod SHIFT, 2, movetoworkspace, 2"
-        "$mainMod SHIFT, 3, movetoworkspace, 3"
-        "$mainMod SHIFT, 4, movetoworkspace, 4"
-        "$mainMod SHIFT, 5, movetoworkspace, 5"
-        "$mainMod SHIFT, 6, movetoworkspace, 6"
-        "$mainMod SHIFT, 7, movetoworkspace, 7"
-        "$mainMod SHIFT, 8, movetoworkspace, 8"
-        "$mainMod SHIFT, 9, movetoworkspace, 9"
-        "$mainMod SHIFT, 0, movetoworkspace, 10"
+        "$mainMod SHIFT, 1, hy3:movetoworkspace, 1"
+        "$mainMod SHIFT, 2, hy3:movetoworkspace, 2"
+        "$mainMod SHIFT, 3, hy3:movetoworkspace, 3"
+        "$mainMod SHIFT, 4, hy3:movetoworkspace, 4"
+        "$mainMod SHIFT, 5, hy3:movetoworkspace, 5"
+        "$mainMod SHIFT, 6, hy3:movetoworkspace, 6"
+        "$mainMod SHIFT, 7, hy3:movetoworkspace, 7"
+        "$mainMod SHIFT, 8, hy3:movetoworkspace, 8"
+        "$mainMod SHIFT, 9, hy3:movetoworkspace, 9"
+        "$mainMod SHIFT, 0, hy3:movetoworkspace, 10"
         # Example special workspace (scratchpad)
         "$mainMod, backslash, togglespecialworkspace, magic"
         "$mainMod SHIFT, backslash, movetoworkspace, special:magic"
@@ -228,7 +268,7 @@
       listener = [
         {
           timeout = 150; # 2.5min.
-          on-timeout = "brightnessctl -s set 10"; # set monitor backlight to minimum
+          on-timeout = "brightnessctl -s set 0"; # set monitor backlight to minimum
           on-resume = "brightnessctl -r"; # monitor backlight restore.
         }
         {
