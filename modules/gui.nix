@@ -1,4 +1,4 @@
-{ pkgs, ghostty, ... }:
+{ pkgs, ghostty, config, ... }:
 {
   nixpkgs.config.allowUnfree = true;
   home.packages = with pkgs; [
@@ -23,7 +23,6 @@
       package = pkgs.iosevka;
       size = 10;
     };
-    themeFile = "Nord";
   };
 
   programs.ghostty = {
@@ -44,7 +43,8 @@
       # - NvimLight
       # - rose-pine-dawn (bws)
       # - seoulbones_light (bws)
-      theme = "light:ayu_light,dark:nord";
+      #theme = "light:ayu_light,dark:nord";
+      theme = "light:catppuccin-latte,dark:catppuccin-${config.catppuccin.flavor}";
     };
   };
 

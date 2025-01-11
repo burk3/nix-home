@@ -10,10 +10,11 @@
     };
     ghostty.url = "github:ghostty-org/ghostty";
     ghostty_hm.url = "github:clo4/ghostty-hm-module";
+    catppuccin.url = "github:catppuccin/nix";
   };
 
   outputs =
-    { nixpkgs, home-manager, ghostty, ghostty_hm, ... }:
+    { nixpkgs, home-manager, ghostty, ghostty_hm, catppuccin, ... }:
     let
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
@@ -32,7 +33,12 @@
 	    single-user = ./modules/single-user.nix;
             gui = ./modules/gui.nix;
             hypr = ./modules/hypr.nix;
-          in [ ghostty_hm.homeModules.default ./home.nix ./modules/shell.nix ] ++
+        in [
+          ghostty_hm.homeModules.default
+          catppuccin.homeManagerModules.catppuccin
+          ./home.nix
+          ./modules/shell.nix
+        ] ++
             (if flags ? "GUI" then [ gui ] else []) ++
 	    (if flags ? "SINGLE-USER" then [ single-user ] else []) ++
             (if flags ? "HYPR" then assert flags ? "GUI"; [ hypr ] else []);

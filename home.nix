@@ -20,11 +20,16 @@
   home.packages = with pkgs; [
     dig
     nil
-    bat
     neofetch
     eternal-terminal
-    btop
   ];
+
+  catppuccin.flavor = "frappe";
+  catppuccin.accent = "teal";
+  catppuccin.enable = true;
+
+  programs.btop.enable = true;
+  programs.bat.enable = true;
 
   programs.git = {
     enable = true;
@@ -46,7 +51,14 @@
       pkgs.vimPlugins.vim-nix
       pkgs.vimPlugins.gundo-vim
       pkgs.vimPlugins.vim-surround
-      pkgs.vimPlugins.vim-airline
+      {
+        plugin = pkgs.vimPlugins.lightline-vim;
+        config = "let g:lightline = {'colorscheme': 'catppuccin'}";
+      }
+      #{
+      #  plugin = pkgs.vimPlugins.vim-airline;
+      #  config = "let g:airline_theme = 'catppuccin'";
+      #}
       pkgs.vimPlugins.vim-markdown
       {
         plugin = pkgs.vimPlugins.nvim-lspconfig;
@@ -54,14 +66,14 @@
           lua require'lspconfig'.nil_ls.setup{}
         '';
       }
-      {
-        plugin = pkgs.vimPlugins.vim-airline-themes;
-        config = "let g:airline_theme='nord_minimal'";
-      }
-      {
-        plugin = pkgs.vimPlugins.nord-nvim;
-        config = "colorscheme nord";
-      }
+      #{
+      #  plugin = pkgs.vimPlugins.vim-airline-themes;
+      #  config = "let g:airline_theme='nord_minimal'";
+      #}
+      #{
+      #  plugin = pkgs.vimPlugins.nord-nvim;
+      #  config = "colorscheme nord";
+      #}
       pkgs.vimPlugins.nvim-treesitter.withAllGrammars
     ];
     extraConfig = ''

@@ -12,7 +12,7 @@
     posy-cursors
     # fonts
     iosevka
-    (nerdfonts.override { fonts = [ "Ubuntu" ]; })
+    (nerdfonts.override { fonts = [ "Ubuntu" "JetBrainsMono" ]; })
   ];
 
   fonts.fontconfig = {
@@ -71,8 +71,10 @@
         gaps_in = 5;
         gaps_out = 20;
         border_size = 2;
-        "col.active_border" = "rgba(33ccffee) rgba(00ff99ee) 45deg";
-        "col.inactive_border" = "rgba(595959aa)";
+        #"col.active_border" = "rgba(33ccffee) rgba(00ff99ee) 45deg";
+        #"col.inactive_border" = "rgba(595959aa)";
+        "col.active_border" = "rgba($blueAlphaee) rgba($greenAlphaee) 45deg";
+        "col.inactive_border" = "rgba($surface2Alphaaa)";
         resize_on_border = false;
         allow_tearing = false;
         #layout = "dwindle";
@@ -103,7 +105,8 @@
         enable_gesture = true;
         columns = 3;
         gaps = 5;
-        bg_col = "rgb(111111)";
+        #bg_col = "rgb(111111)";
+        bg_col = "$crust";
         workspace_method = "center current";
         gesture_fingers = 3; # 3 or 4
         gesture_distance = 300; # how far is the "max"
@@ -394,45 +397,47 @@
         border: none;
         font-family: Ubuntu Nerd Font, Roboto, Arial, sans-serif;
         font-size: 13px;
-        color: #ffffff;
-        border-radius: 10px;
+        border-radius: 1rem;
       }
 
       window {
         /*font-weight: bold;*/
+        color: @text;
       }
       window#waybar {
-          background: rgba(0, 0, 0, 0);
+          background: transparent;
       }
       /*-----module groups----*/
       .modules-right {
-        background-color: rgba(0,43,51,0.85);
+        background-color: @surface0;
         margin: 2px 10px 0 0;
       }
       .modules-center {
-        background-color: rgba(0,43,51,0.85);
+        background-color: @surface0;
         margin: 2px 0 0 0;
       }
       .modules-left {
         margin: 2px 0 0 5px;
-        background-color: rgba(0,119,179,0.6);
+        background-color: @surface0;
       }
       /*-----modules indv----*/
       #workspaces button {
+        color: @text;
         padding: 1px 5px;
-        background-color: transparent;
       }
       #workspaces button:hover {
-        box-shadow: inherit;
-        background-color: rgba(0,153,153,1);
+        background: none;
+        box-shadow: none;
+        text-shadow: none;
+        color: @sapphire;
       }
 
       #workspaces button.active {
-        background-color: rgba(0,43,51,0.85);
+        color: @green;
       }
 
-      # workspaces button.urgent {
-        background-color: #bf616a;
+      #workspaces button.urgent {
+        color: @red;
       }
 
       #clock,
@@ -452,35 +457,30 @@
           padding: 0 10px;
       }
       #submap, #mode {
-          color: #cc3436;
           font-weight: bold;
       }
       /*-----Indicators----*/
       #idle_inhibitor.activated {
-          color: #2dcc36;
+          color: @green;
       }
       #pulseaudio.muted {
           color: #cc3436;
       }
+      #battery {
+        color: @teal;
+      }
       #battery.charging {
-          color: #2dcc36;
+          color: @green;
       }
       #battery.warning:not(.charging) {
-        color: #e6e600;
+        color: @yellow;
       }
       #battery.critical:not(.charging) {
-          color: #cc3436;
+          color: @red;
       }
       #temperature.critical {
-          color: #cc3436;
+          color: @peach;
       }
-      /*-----Colors----*/
-      /*
-       *rgba(0,85,102,1),#005566 --> Indigo(dye)
-       *rgba(0,43,51,1),#002B33 --> Dark Green
-       *rgba(0,153,153,1),#009999 --> Persian Green
-       *
-       */
     '';
     # }}} waybar.style
   };
@@ -491,7 +491,13 @@
     enable = true;
     settings =
       let
-        wallpaper = "${pkgs.pantheon.elementary-wallpapers}/share/backgrounds/Photo of Valley.jpg";
+        wallpapers = pkgs.fetchFromGitHub {
+          owner = "zhichaoh";
+          repo = "catppuccin-wallpapers";
+          rev = "1023077979591cdeca76aae94e0359da1707a60e";
+          sha256 = "0rd6hfd88bsprjg68saxxlgf2c2lv1ldyr6a8i7m4lgg6nahbrw7";
+        };
+        wallpaper = "${wallpapers}/landscapes/tropic_island_night.jpg";
       in
       {
         preload = [
@@ -509,24 +515,95 @@
   programs.hyprlock = {
     enable = true;
     settings = {
-      auth = {
-        "fingerprint:enabled" = true;
+      "$font" = "JetBrainsMono Nerd Font";
+      general = {
+        disable_loading_bar = true;
+        hide_cursor = true;
       };
       background = [
         {
-          path = "screenshot";
-          blur_passes = 3;
-          blur_size = 8;
+          monitor = "";
+          path = let
+            wallpapers = pkgs.fetchFromGitHub {
+              owner = "zhichaoh";
+              repo = "catppuccin-wallpapers";
+              rev = "1023077979591cdeca76aae94e0359da1707a60e";
+              sha256 = "0rd6hfd88bsprjg68saxxlgf2c2lv1ldyr6a8i7m4lgg6nahbrw7";
+            };
+          in "${wallpapers}/patterns/line_icons.png";
+          blur_passes = 0;
+          color = "$base";
         }
       ];
-
+      label = [
+        {
+          monitor = "";
+          text = "Layout: $LAYOUT";
+          color = "$text";
+          font_size = 25;
+          font_family = "$family";
+          position = "30, -30";
+          halign = "left";
+          valign = "top";
+        }
+        {
+          monitor = "";
+          text = "$TIME";
+          color = "$text";
+          font_size = 90;
+          font_family = "$font";
+          position = "-30, 0";
+          halign = "right";
+          valign = "top";
+        }
+        {
+          monitor = "";
+          text = "cmd[update:43200000] date +\"%A, %d %B %Y\"";
+          color = "$text";
+          font_size = 25;
+          font_family = "$font";
+          position = "-30, -150";
+          halign = "right";
+          valign = "top";
+        }
+      ];
+      image = [
+        {
+          monitor = "";
+          path = "$HOME/.face";
+          size = 100;
+          border_color = "$accent";
+          position = "0, 75";
+          halign = "center";
+          valign = "center";
+        }
+      ];
       input-field = [
         {
           monitor = "";
+          size = "300, 60";
+          outline_thickness = 4;
+          dots_size = "0.2";
+          dots_spacing = "0.2";
+          dots_center = true;
+          outer_color = "$overlay0";
+          inner_color = "$surface0";
+          font_color = "$text";
           fade_on_empty = false;
-          shadow_passes = 2;
+          placeholder_text = "<span foreground=\"##$textAlpha\"><i>󰌾 Logged in as </i><span foreground=\"##$accentAlpha\">$USER</span></span>";
+          hide_input = false;
+          check_color = "$accent";
+          fail_color = "$red";
+          fail_text = "<i>$FAIL <b>($ATTEMPTS)</b></i>";
+          capslock_color = "$yellow";
+          position = "0, -47";
+          halign = "center";
+          valign = "center";
         }
       ];
+      auth = {
+        "fingerprint:enabled" = true;
+      };
     };
   };
   # }}} hyprlock
