@@ -27,7 +27,7 @@
         "Berkeley Mono"
         "Iosevka"
       ];
-      font-size = 10;
+      font-size = 8;
       # Potentially good light themes; (bws) means black and white are swapped in numbered colors
       # - Material
       # - iceberg-light (bws)
