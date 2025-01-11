@@ -11,6 +11,9 @@
     playerctl
     iosevka
     pinta
+    inkscape
+    remmina
+    brogue-ce
   ];
 
   programs.kitty = {
