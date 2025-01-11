@@ -69,7 +69,7 @@
       env = [ "XCURSOR_SIZE,32" "HYPRCURSOR_SIZE,32" "HYPRCURSOR_THEME,Posy_Cursor_Black" ];
       general = {
         gaps_in = 5;
-        gaps_out = 20;
+        gaps_out = "16,20,20,20";
         border_size = 2;
         #"col.active_border" = "rgba(33ccffee) rgba(00ff99ee) 45deg";
         #"col.inactive_border" = "rgba(595959aa)";
@@ -400,28 +400,32 @@
         border-radius: 1rem;
       }
 
-      window {
-        /*font-weight: bold;*/
-        color: @text;
+      window#waybar > box {
+        margin: 3px;
       }
       window#waybar {
           background: transparent;
+        color: @text;
       }
       /*-----module groups----*/
       .modules-right {
         background-color: @surface0;
-        margin: 2px 10px 0 0;
+        margin: 2px 5px 0 0;
+        box-shadow: 0 0 2px #000;
       }
       .modules-center {
         background-color: @surface0;
         margin: 2px 0 0 0;
+        box-shadow: 0 0 2px #000;
       }
       .modules-left {
         margin: 2px 0 0 5px;
         background-color: @surface0;
+        box-shadow: 0 0 2px #000;
       }
       /*-----modules indv----*/
       #workspaces button {
+        font-weight: bold;
         color: @text;
         padding: 1px 5px;
       }
