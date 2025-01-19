@@ -8,13 +8,11 @@
       url = "github:nix-community/home-manager/release-24.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    ghostty.url = "github:ghostty-org/ghostty";
-    ghostty_hm.url = "github:clo4/ghostty-hm-module";
     catppuccin.url = "github:catppuccin/nix";
   };
 
   outputs =
-    { nixpkgs, home-manager, ghostty, ghostty_hm, catppuccin, ... }:
+    { nixpkgs, home-manager, catppuccin, ... }:
     let
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
@@ -34,7 +32,6 @@
             gui = ./modules/gui.nix;
             hypr = ./modules/hypr.nix;
         in [
-          ghostty_hm.homeModules.default
           catppuccin.homeManagerModules.catppuccin
           ./home.nix
           ./modules/shell.nix
@@ -46,7 +43,6 @@
         # Optionally use extraSpecialArgs
         # to pass through arguments to home.nix
         extraSpecialArgs = {
-          ghostty = ghostty;
         };
       };
     };

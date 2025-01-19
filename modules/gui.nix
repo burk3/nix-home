@@ -21,8 +21,8 @@
 
   programs.ghostty = {
     enable = true;
-    package = ghostty.packages.x86_64-linux.default;
-    shellIntegration.enable = true;
+    enableZshIntegration = true;
+    enableBashIntegration = true;
     settings = {
       window-decoration = false;
       cursor-style = "block";
