@@ -6,7 +6,6 @@
     bitwarden-desktop
     yacreader
     legcord
-    mpv
     spotify
     playerctl
     iosevka
@@ -15,6 +14,10 @@
     remmina
     brogue-ce
   ];
+
+  programs.imv.enable = true;
+  programs.mpv.enable = true;
+  programs.zathura.enable = true;
 
   programs.ghostty = {
     enable = true;
