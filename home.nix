@@ -29,10 +29,12 @@
   catppuccin.enable = true;
 
   programs.btop.enable = true;
+  programs.bottom.enable = true;
   programs.bat.enable = true;
 
   programs.git = {
     enable = true;
+    delta.enable = true;
     userName = "Burke Cates";
     userEmail = "burke.cates@gmail.com";
     extraConfig.init.defaultBranch = "master";
