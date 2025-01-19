@@ -5,8 +5,6 @@
     hyprsunset
     hyprwall
     hyprshot
-    swaybg
-    wofi
     brightnessctl
     networkmanagerapplet
     posy-cursors
@@ -23,6 +21,17 @@
     ];
   };
 
+
+  services.dunst = {
+    enable = true;
+    settings = {
+      urgency_normal.timeout = 5;
+      urgency_low.timeout = 2;
+      urgency_critical.timeout = 10;
+    };
+  };
+
+  programs.fuzzel.enable = true;
   services.blueman-applet.enable = true;
   services.gnome-keyring = {
     enable = true;
@@ -60,7 +69,7 @@
     settings = let
       terminal = "ghostty";
       fileManager = "nautilus";
-      menu = "wofi --show drun";
+      menu = "fuzzel";
       lock = "loginctl lock-session";
     in {
       # {{{ hyprland.settings
@@ -147,6 +156,8 @@
         "suppressevent maximize, class:.*"
         # Fix some dragging issues with XWayland
         "nofocus,class:^$,title:^$,xwayland:1,floating:1,fullscreen:0,pinned:0"
+        # mpv should just float i guess
+        "float,class:mpv"
       ];
       "$mainMod" = "SUPER";
       bind = [
@@ -612,15 +623,4 @@
   };
   # }}} hyprlock
 
-  # {{{ swaync
-  services.swaync = {
-    enable = true;
-    settings = {
-      timeout = 5;
-      timeout-low = 2;
-      timeout-critical = 0;
-      notification-window-width = 300;
-    };
-  };
-  # }}} swaync
 }
