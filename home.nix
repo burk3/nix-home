@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ pkgs, extraPkgs, ... }:
 
 {
   # Home Manager needs a bit of information about you and the paths it should
@@ -22,6 +22,7 @@
     nil
     neofetch
     eternal-terminal
+    extraPkgs.isd
   ];
 
   catppuccin.flavor = "frappe";

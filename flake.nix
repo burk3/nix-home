@@ -9,10 +9,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     catppuccin.url = "github:catppuccin/nix";
+    isd.url = "github:isd-project/isd";
   };
 
   outputs =
-    { nixpkgs, home-manager, catppuccin, ... }:
+    { nixpkgs, home-manager, catppuccin, ... }@inputs:
     let
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
@@ -43,6 +44,9 @@
         # Optionally use extraSpecialArgs
         # to pass through arguments to home.nix
         extraSpecialArgs = {
+          extraPkgs = {
+            isd = inputs.isd.packages.${system}.default;
+          };
         };
       };
     };
