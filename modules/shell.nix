@@ -20,11 +20,12 @@
     enable = true;
     history.size = 10000;
     enableCompletion = true;
+    syntaxHighlighting.enable = true;
     autosuggestion = {
       enable = true;
       strategy = [
-        "completion"
         "match_prev_cmd"
+        "completion"
       ];
     };
     initExtra = ''
