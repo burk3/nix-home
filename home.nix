@@ -36,10 +36,14 @@
   programs.git = {
     enable = true;
     delta.enable = true;
+    ignores = [
+      ".envrc"
+      ".direnv"
+      ".venv"
+    ];
     userName = "Burke Cates";
     userEmail = "burke.cates@gmail.com";
     extraConfig.init.defaultBranch = "master";
-    extraConfig.core.excludesfile = "~/.config/git/ignore";
     aliases.co = "checkout";
     aliases.st = "status";
     aliases.lg = "log --graph --decorate --oneline";
@@ -103,11 +107,6 @@
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
   # plain files is through 'home.file'.
   home.file = {
-    ".config/git/ignore".text = ''
-      .envrc
-      .direnv
-      .venv
-    '';
     # # Building this configuration will create a copy of 'dotfiles/screenrc' in
     # # the Nix store. Activating the configuration will then make '~/.screenrc' a
     # # symlink to the Nix store copy.
