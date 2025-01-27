@@ -1,2 +1,4 @@
-flags/*
-!flags/.keep
+/local/*
+!/local/.keep
+/flags/*
+!/flags/.keep

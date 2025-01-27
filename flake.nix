@@ -28,18 +28,20 @@
         # Hopefully this is not too much of a faux pas. :)
         # Always pull in home and shell.
         modules = let
-            flags = builtins.readDir ./flags;
-	    single-user = ./modules/single-user.nix;
-            gui = ./modules/gui.nix;
-            hypr = ./modules/hypr.nix;
+          local = ./local/default.nix;
+          flags = builtins.readDir ./flags;
+          single-user = ./modules/single-user.nix;
+          gui = ./modules/gui.nix;
+          hypr = ./modules/hypr.nix;
         in [
           catppuccin.homeManagerModules.catppuccin
           ./home.nix
           ./modules/shell.nix
         ] ++
             (if flags ? "GUI" then [ gui ] else []) ++
-	    (if flags ? "SINGLE-USER" then [ single-user ] else []) ++
-            (if flags ? "HYPR" then assert flags ? "GUI"; [ hypr ] else []);
+            (if flags ? "SINGLE-USER" then [ single-user ] else []) ++
+            (if flags ? "HYPR" then assert flags ? "GUI"; [ hypr ] else []) ++
+            (if builtins.pathExists local then [ local ] else []);
 
         # Optionally use extraSpecialArgs
         # to pass through arguments to home.nix
