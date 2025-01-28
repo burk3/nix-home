@@ -1,10 +1,10 @@
-{ pkgs, extraPkgs, ... }:
-
+{ pkgs, p13n, ... }:
 {
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
-  home.username = "burke";
-  home.homeDirectory = "/home/burke";
+  # NOTE: this should be populated by the regular home-manager config I think.
+  #home.username = "burke";
+  #home.homeDirectory = "/home/burke";
 
   # This value determines the Home Manager release that your configuration is
   # compatible with. This helps avoid breakage when a new Home Manager release
@@ -13,7 +13,9 @@
   # You should not change this value, even if you update Home Manager. If you do
   # want to update the value, then make sure to first check the Home Manager
   # release notes.
-  home.stateVersion = "24.11"; # Please read the comment before changing.
+  # NOTE from burk3: I'm setting this in the normal home-manager config since this is going to be imported.
+  #                  It is probably worth keeping track of here tho.
+  # home.stateVersion = "24.11"; # Please read the comment before changing.
 
   # The home.packages option allows you to install Nix packages into your
   # environment.
@@ -22,7 +24,6 @@
     nil
     neofetch
     eternal-terminal
-    extraPkgs.isd
   ];
 
   catppuccin.flavor = "frappe";
@@ -41,8 +42,6 @@
       ".direnv"
       ".venv"
     ];
-    userName = "Burke Cates";
-    userEmail = "burke.cates@gmail.com";
     extraConfig.init.defaultBranch = "master";
     aliases.co = "checkout";
     aliases.st = "status";
@@ -119,6 +118,4 @@
     # '';
   };
 
-  # Let Home Manager install and manage itself.
-  programs.home-manager.enable = true;
 }
