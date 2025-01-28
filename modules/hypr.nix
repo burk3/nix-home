@@ -6,6 +6,7 @@
     hyprwall
     hyprshot
     brightnessctl
+    pavucontrol
     networkmanagerapplet
     posy-cursors
     # fonts
