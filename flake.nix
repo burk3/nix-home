@@ -20,6 +20,7 @@
         gui = mkMod [ home ./modules/gui.nix ];
         hypr = mkMod [ gui ./modules/hypr.nix ];
         single-user = ./modules/single-user.nix;
+        wsl = ./modules/wsl.nix;
       };
     };
 }
