@@ -1,5 +1,127 @@
 # vim: foldmethod=marker
 { pkgs, ... }:
+let
+  hyprctl = "${pkgs.hyprland}/bin/hyprctl";
+  jq = "${pkgs.jq}/bin/jq";
+  # called when lid is closed
+  lidSwitchOnScript = pkgs.writers.writeBash "lid-switch-on" ''
+    log() {
+      echo $(date --rfc-3339=seconds) lid-switch-on: "$@" >> /tmp/lid.log
+    }
+    # if this is running while the suspend target is still active, do nothing
+    if systemctl is-active suspend ; then
+      log suspend target active, exiting
+      exit 0
+    fi
+    # if there is only one monitor, suspend the system
+    # if there's more, just disable the internal monitor
+    monitors_json=$(${hyprctl} -j monitors all)
+    num_exts=$(${jq} 'map(select(.name != "eDP-1")) | length' <<< "$monitors_json")
+    internal_enabled=$(${jq} -r '.[] | select(.name == "eDP-1") | .disabled==false' <<< "$monitors_json")
+    log "$internal_enabled-$num_exts"
+    case "$internal_enabled-$num_exts" in
+      false-*)
+        log 'false-*'
+        log no internal monitor detected, assuming this is a delayed event and ignoring
+        ;;
+      true-0)
+        log true-0
+        systemctl suspend
+        ;;
+      true-[1-9]*)
+        log 'true-[1-9]*'
+        log external monitors detected, disabling internal monitor
+        ${hyprctl} keyword monitor "eDP-1, disable"
+        ;;
+      *)
+        log 'fallback'
+        ;;
+    esac
+  '';
+  # called when lid is opened
+  lidSwitchOffScript = pkgs.writers.writeBash "lid-switch-off" ''
+    # if the internal monitor is disabled, enable it
+    log() {
+      echo $(date --rfc-3339=seconds) lid-switch-off: "$@" >> /tmp/lid.log
+    }
+    internal_disabled=$(${hyprctl} -j monitors all | ${jq} -r '.[] | select(.name == "eDP-1") | .disabled')
+    log internal_disabled=$internal_disabled
+    if [[ $internal_disabled != "false" ]]; then
+      log enabling internal monitor
+      ${hyprctl} keyword monitor "eDP-1,preferred,auto,auto"
+    fi
+  '';
+  afterSleepScript = pkgs.writers.writeBash "after-sleep" ''
+    # handles waking up from sleep for various lid/monitor states
+    # lid open,   intMon off, any number of extMons -> enable intMon
+    # lid open,   intMon on,  any number of extMons -> do nothing
+    # lid closed, intMon off, extMons == 0 -> enable intMon, suspend
+    # lid closed, intMon on,  extMons == 0 -> suspend
+    # lid closed, intMon off, extMons >= 1 -> noop
+    # lid closed, intMon on,  extMons >= 1 -> disable intMon
+    # FALLBACK -> turn on the internal monitor and dpms on
+
+    lid_state=$(</proc/acpi/button/lid/LID0/state)
+    lid=''${lid_state##* }
+    monitors_json=$(${hyprctl} -j monitors all)
+    internal_enabled=$(${jq} -r '.[] | select(.name == "eDP-1") | .disabled==false' <<< "$monitors_json")
+    num_monitors=$(${jq} length <<< "$monitors_json")
+
+    log() {
+      echo $(date --rfc-3339=seconds) after-sleep: "$@" >> /tmp/lid.log
+    }
+    _enable_int() {
+      log hyprctl keyword monitor "eDP-1,preferred,auto,auto"
+      ${hyprctl} keyword monitor "eDP-1,preferred,auto,auto"
+    }
+    _disable_int() {
+      log hyprctl keyword monitor "eDP-1, disable"
+      ${hyprctl} keyword monitor "eDP-1, disable"
+    }
+    _dpms_on() {
+      log hyprctl dispatch dpms on
+      ${hyprctl} dispatch dpms on
+    }
+    _suspend() {
+      log systemctl suspend
+      systemctl suspend
+    }
+
+    log "$lid-$internal_enabled-$num_monitors"
+    case "$lid-$internal_enabled-$num_monitors" in
+      open-false-[1-9]*)
+        log 'open-false-[1-9]*'
+        _enable_int
+        _dpms_on
+        ;;
+      open-true-[1-9]*)
+        log 'open-true-[1-9]*'
+        _dpms_on
+        ;;
+      closed-false-1)
+        log 'closed-false-1'
+        _enable_int
+        _suspend
+        ;;
+      closed-true-1)
+        log 'closed-true-1'
+        _suspend
+        ;;
+      closed-false-[1-9]*)
+        log 'closed-false-[1-9]*'
+        ;;
+      closed-true-[1-9]*)
+        log 'closed-true-[1-9]*'
+        _disable_int
+        ;;
+      *)
+        log 'fallback'
+        _enable_int
+        _dpms_on
+        ;;
+    esac
+  '';
+in
 {
   home.packages = with pkgs; [
     hyprsunset
@@ -261,7 +383,9 @@
         ", XF86AudioPlay, exec, playerctl play-pause"
         ", XF86AudioPrev, exec, playerctl previous"
         # go to sleep when shut
-        ", switch:on:Lid Switch, exec, systemctl suspend"
+        #", switch:on:Lid Switch, exec, systemctl suspend"
+        ", switch:on:Lid Switch, exec, ${lidSwitchOnScript}"
+        ", switch:off:Lid Switch, exec, ${lidSwitchOffScript}"
       ];
       # }}} hyprland.settings
     };
@@ -275,7 +399,7 @@
       general = {
         lock_cmd = "hyprlock";
         before_sleep_cmd = "loginctl lock-session";
-        after_sleep_cmd = "hyprctl dispatch dpms on";
+        after_sleep_cmd = "${afterSleepScript}";
         ignore_dbus_inhibit = false;
         ignore_systemd_inhibit = false;
       };
