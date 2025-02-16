@@ -1,4 +1,4 @@
-{ pkgs, p13n, ... }:
+{ pkgs, ... }:
 {
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
@@ -24,6 +24,7 @@
     nil
     neofetch
     eternal-terminal
+    nixd
   ];
 
   catppuccin.flavor = "frappe";
@@ -53,34 +54,35 @@
     defaultEditor = true;
     vimAlias = true;
     vimdiffAlias = true;
-    plugins = [
-      pkgs.vimPlugins.vim-nix
-      pkgs.vimPlugins.gundo-vim
-      pkgs.vimPlugins.vim-surround
+    plugins = with pkgs.vimPlugins; [
+      vim-nix
+      gundo-vim
+      nerdtree
+      vim-surround
       {
-        plugin = pkgs.vimPlugins.lightline-vim;
+        plugin = lightline-vim;
         config = "let g:lightline = {'colorscheme': 'catppuccin'}";
       }
       #{
-      #  plugin = pkgs.vimPlugins.vim-airline;
+      #  plugin = vim-airline;
       #  config = "let g:airline_theme = 'catppuccin'";
       #}
-      pkgs.vimPlugins.vim-markdown
+      vim-markdown
       {
-        plugin = pkgs.vimPlugins.nvim-lspconfig;
+        plugin = nvim-lspconfig;
         config = ''
           lua require'lspconfig'.nil_ls.setup{}
         '';
       }
       #{
-      #  plugin = pkgs.vimPlugins.vim-airline-themes;
+      #  plugin = vim-airline-themes;
       #  config = "let g:airline_theme='nord_minimal'";
       #}
       #{
-      #  plugin = pkgs.vimPlugins.nord-nvim;
+      #  plugin = nord-nvim;
       #  config = "colorscheme nord";
       #}
-      pkgs.vimPlugins.nvim-treesitter.withAllGrammars
+      nvim-treesitter.withAllGrammars
     ];
     extraConfig = ''
       " sane backspaces

@@ -3,7 +3,6 @@
 {
   home.packages = with pkgs; [
     hyprsunset
-    hyprwall
     hyprshot
     brightnessctl
     pavucontrol
