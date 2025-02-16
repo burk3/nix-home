@@ -250,6 +250,11 @@ in
           trigger_width = 800;
           trigger_height = 500;
         };
+        tabs = {
+          text_font = "Ubuntu Nerd Font";
+          "col.focused" = "rgba($accentAlphaee)";
+          "col.urgent" = "rgba($redAlphaee)";
+        };
       };
       master = {
         new_status = "master";
@@ -285,7 +290,7 @@ in
       bind = [
         "$mainMod, Return, exec, ${terminal}"
         "$mainMod SHIFT, C, hy3:killactive,"
-        "$mainMod SHIFT, Q, exit,"
+        "$mainMod CONTROL, Q, exit,"
         "$mainMod, E, exec, ${fileManager}"
         "$mainMod, V, togglefloating,"
         "$mainMod, R, exec, ${menu}"
@@ -302,6 +307,8 @@ in
         "$mainMod, L, hy3:movefocus, r"
         "$mainMod, K, hy3:movefocus, u"
         "$mainMod, J, hy3:movefocus, d"
+        # and toggle focus for floats w/ mod+tab
+        "$mainMod, Tab, hy3:togglefocuslayer, nowarp"
         # hy3 stuff
         "$mainMod+SHIFT, T, hy3:makegroup, tab"
         "$mainMod+SHIFT, E, hy3:makegroup, v"
@@ -357,7 +364,7 @@ in
         "$mainMod SHIFT, 0, hy3:movetoworkspace, 10"
         # Example special workspace (scratchpad)
         "$mainMod, backslash, togglespecialworkspace, magic"
-        "$mainMod SHIFT, backslash, movetoworkspace, special:magic"
+        "$mainMod SHIFT, backslash, hy3:movetoworkspace, special:magic"
         # Scroll through existing workspaces with mainMod + scroll
         "$mainMod, mouse_down, workspace, e+1"
         "$mainMod, mouse_up, workspace, e-1"
