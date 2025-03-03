@@ -200,7 +200,7 @@ in
       env = [ "XCURSOR_SIZE,32" "HYPRCURSOR_SIZE,32" "HYPRCURSOR_THEME,Posy_Cursor_Black" ];
       general = {
         gaps_in = 5;
-        gaps_out = "16,20,20,20";
+        gaps_out = "11,15,15,15";
         border_size = 2;
         #"col.active_border" = "rgba(33ccffee) rgba(00ff99ee) 45deg";
         #"col.inactive_border" = "rgba(595959aa)";
@@ -212,7 +212,7 @@ in
         layout = "hy3";
       };
       decoration = {
-        rounding = 10;
+        rounding = 5;
         active_opacity = "1.0";
         inactive_opacity = "1.0";
         shadow = {
@@ -285,6 +285,7 @@ in
         "nofocus,class:^$,title:^$,xwayland:1,floating:1,fullscreen:0,pinned:0"
         # mpv should just float i guess
         "float,class:mpv"
+        "float,class:mame"
       ];
       "$mainMod" = "SUPER";
       bind = [
