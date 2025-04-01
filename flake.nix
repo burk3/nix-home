@@ -12,7 +12,7 @@
           mkMod = mods: { ... }: { imports = mods; };
         in rec {
         home = mkMod [
-          catppuccin.homeManagerModules.catppuccin
+          catppuccin.homeModules.catppuccin
           ./home.nix
           ./modules/shell.nix
         ];
