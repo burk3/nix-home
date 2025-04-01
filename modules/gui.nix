@@ -4,7 +4,6 @@
   home.packages = with pkgs; [
     vscode.fhs
     bitwarden-desktop
-    yacreader
     legcord
     spotify
     playerctl
