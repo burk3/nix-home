@@ -132,7 +132,8 @@ in
     posy-cursors
     # fonts
     iosevka
-    (nerdfonts.override { fonts = [ "Ubuntu" "JetBrainsMono" ]; })
+    nerd-fonts.ubuntu
+    nerd-fonts.jetbrains-mono
   ];
 
   fonts.fontconfig = {
