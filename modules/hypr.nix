@@ -26,7 +26,7 @@ let
         ;;
       true-0)
         log true-0
-        systemctl suspend
+        systemctl suspend-then-hibernate
         ;;
       true-[1-9]*)
         log 'true-[1-9]*'
@@ -83,8 +83,8 @@ let
       ${hyprctl} dispatch dpms on
     }
     _suspend() {
-      log systemctl suspend
-      systemctl suspend
+      log systemctl suspend-then-hibernate
+      systemctl suspend-then-hibernate
     }
 
     log "$lid-$internal_enabled-$num_monitors"
@@ -392,7 +392,7 @@ in
         ", XF86AudioPlay, exec, playerctl play-pause"
         ", XF86AudioPrev, exec, playerctl previous"
         # go to sleep when shut
-        #", switch:on:Lid Switch, exec, systemctl suspend"
+        #", switch:on:Lid Switch, exec, systemctl suspend-then-hibernate"
         ", switch:on:Lid Switch, exec, ${lidSwitchOnScript}"
         ", switch:off:Lid Switch, exec, ${lidSwitchOffScript}"
       ];
@@ -429,7 +429,7 @@ in
         }
         {
           timeout = 1800;
-          on-timeout = "systemcctl suspend";
+          on-timeout = "systemcctl suspend-then-hibernate";
         }
       ];
     };
