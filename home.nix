@@ -25,6 +25,7 @@
     neofetch
     eternal-terminal
     nixd
+    nh
   ];
 
   catppuccin.flavor = "frappe";
