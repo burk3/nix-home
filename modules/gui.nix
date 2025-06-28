@@ -43,7 +43,7 @@
       # - rose-pine-dawn (bws)
       # - seoulbones_light (bws)
       #theme = "light:ayu_light,dark:nord";
-      theme = "light:catppuccin-latte,dark:catppuccin-${config.catppuccin.flavor}";
+      theme = "catppuccin-${config.catppuccin.flavor}";
     };
   };
 
