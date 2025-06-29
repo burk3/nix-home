@@ -451,6 +451,7 @@ in
         modules-left = [
           "hyprland/workspaces"
           "hyprland/submap"
+          "niri/workspaces"
         ];
         modules-right = [
           "tray"
@@ -461,6 +462,7 @@ in
         ];
         modules-center = [
           "hyprland/window"
+          "niri/window"
         ];
         clock = {
           format = "  {:%H:%M   %e %b}";
@@ -472,6 +474,12 @@ in
           format = "<span style=\"italic\">{}</span>";
         };
         "hyprland/window" = {
+          format = "{}";
+          max-length = 80;
+          min-length = 80;
+          tooltip = false;
+        };
+        "niri/window" = {
           format = "{}";
           max-length = 80;
           min-length = 80;
