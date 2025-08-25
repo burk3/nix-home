@@ -199,6 +199,7 @@ in
       monitor = ",preferred,auto,auto";
       exec-once = [ "nm-applet &" ];
       env = [ "XCURSOR_SIZE,32" "HYPRCURSOR_SIZE,32" "HYPRCURSOR_THEME,Posy_Cursor_Black" ];
+      ecosystem.no_update_news = true;
       general = {
         gaps_in = 5;
         gaps_out = "11,15,15,15";
@@ -265,6 +266,7 @@ in
         disable_hyprland_logo = true;
       };
       input = {
+        numlock_by_default = true;
         kb_layout = "us";
         follow_mouse = 1;
         sensitivity = 0;
